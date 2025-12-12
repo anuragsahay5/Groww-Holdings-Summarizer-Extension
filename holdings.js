@@ -6,7 +6,56 @@ const GLOBAL_STATE = {
     close_button: null
 }
 
+const updateTable = () => {
+    const trs = document.querySelectorAll(".holdingTable_noBorder__BDRki")[0].children[1].children
+    const holdings_lists = Array.from(trs).map((tr) => {
+        return getValuesFromTableRow(tr)
+    })
+
+    const data_lists = holdings_lists.map((holdings) => {
+        const total_charges = parseFloat(getTotalCharges({
+            qty: holdings.qty,
+            buyPrice: holdings.buyPrice.slice(1),
+            marketPrice: holdings.marketPrice.slice(1)
+        }).toFixed(2))
+
+        return {
+            ...holdings,
+            totalCharges: total_charges,
+            netPL: parseFloat(holdings.returns.replace(/[₹,]/g, '')) - total_charges
+        }
+    })
+
+    GLOBAL_STATE.main_table_frame.children[0].children[1].children[1].innerHTML = ""
+
+    data_lists.forEach((data_list) => {
+        GLOBAL_STATE.main_table_frame.children[0].children[1].children[1].innerHTML += getRowHTML({
+            ...data_list,
+            charges: data_list.totalCharges
+
+        })
+    })
+
+}
+
+const observer = new MutationObserver(mutations => {
+    mutations.forEach(m => {
+        updateTable()
+    })
+})
+
 const showTableFrame = () => {
+    const tds = Array.from(document.querySelectorAll(".holdingTable_noBorder__BDRki")[0].children[1].children).map((val) => {
+        return val.children[2].childNodes[0]
+    })
+    updateTable()
+    tds.forEach(td => {
+        observer.observe(td, {
+            characterData: true,
+            subtree: true
+        })
+    })
+
     GLOBAL_STATE.tableVisible = true
     GLOBAL_STATE.view_details_button.textContent = "Close Details"
     GLOBAL_STATE.main_table_frame.style.display = "block"
@@ -14,6 +63,7 @@ const showTableFrame = () => {
 }
 
 const hideTableFrame = () => {
+    observer.disconnect()
     GLOBAL_STATE.tableVisible = false
     GLOBAL_STATE.main_table_frame.style.display = "none"
     GLOBAL_STATE.view_details_button.textContent = "Show Details"
@@ -57,37 +107,6 @@ const getTotalCharges = ({ qty, buyPrice, marketPrice }) => {
     return total_charges
 }
 
-const updateTable = () => {
-    const trs = document.querySelectorAll(".holdingTable_noBorder__BDRki")[0].children[1].children
-    const holdings_lists = Array.from(trs).map((tr) => {
-        return getValuesFromTableRow(tr)
-    })
-
-    const data_lists = holdings_lists.map((holdings) => {
-        const total_charges = parseFloat(getTotalCharges({
-            qty: holdings.qty,
-            buyPrice: holdings.buyPrice.slice(1),
-            marketPrice: holdings.marketPrice.slice(1)
-        }).toFixed(2))
-
-        return {
-            ...holdings,
-            totalCharges: total_charges,
-            netPL: parseFloat(holdings.returns.replace(/[₹,]/g, '')) - total_charges
-        }
-    })
-
-    GLOBAL_STATE.main_table_frame.children[0].children[1].children[1].innerHTML = ""
-
-    data_lists.forEach((data_list) => {
-        GLOBAL_STATE.main_table_frame.children[0].children[1].children[1].innerHTML += getRowHTML({
-            ...data_list,
-            charges: data_list.totalCharges
-
-        })
-    })
-
-}
 
 const addWidget = () => {
     try {
@@ -143,27 +162,8 @@ const addWidget = () => {
     }
 }
 
-const observer = new MutationObserver(mutations => {
-    mutations.forEach(m => {
-        updateTable()
-    })
-})
-
 window.addEventListener("load", () => {
-    setTimeout(() => {
-        addWidget()
-        const tds = Array.from(document.querySelectorAll(".holdingTable_noBorder__BDRki")[0].children[1].children).map((val) => {
-            return val.children[2].childNodes[0]
-        })
-        updateTable()
-
-        tds.forEach(td => {
-            observer.observe(td, {
-                characterData: true,
-                subtree: true
-            })
-        })
-    }, 2000)
+    addWidget()
 })
 
 
