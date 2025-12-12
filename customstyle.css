@@ -1,0 +1,79 @@
+#hUNjLePtTQ {
+  font-family:GrowwSans, NotoSans, system-ui;
+  height: 0;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+}
+
+#LycwXRwoDa {
+  height: 300px;
+  margin-top: 100px;
+  display:none;
+}
+
+#APggbvzWvH {
+  background-color: white;
+  box-shadow: none;
+  border: 1px solid #79797959;
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #2d2d2de6;
+  font-weight: 500;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  outline: none;
+  cursor: pointer;
+  z-index: 999;
+}
+#BzFZasRDLg {
+  background-color: white;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.25);
+  width: fit-content;
+  height: 300px;
+  padding: 5px 0;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  color: #44475b;
+  margin: 100px auto;
+  position: relative;
+  z-index: 999;
+}
+
+#YwaePCFNGQ {
+  position: relative;
+  border: none;
+  background-color: transparent;
+  font-weight: 600;
+  color: #2d2d2de6;
+  opacity: 90%;
+}
+#YwaePCFNGQ:hover {
+  opacity: 80%;
+  cursor: pointer;
+}
+#YwaePCFNGQ:active {
+  opacity: 100%;
+  cursor: pointer;
+}
+
+
+#BzFZasRDLg th {
+  font-weight: 600;
+  font-size: 0.9em;
+  background-color: rgba(45, 45, 45, 0.1);
+  padding: 10px;
+}
+
+#BzFZasRDLg tbody {
+  font-size: 0.9em;
+}
+#BzFZasRDLg tr td {
+  padding: 10px;
+}
+#BzFZasRDLg table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #878787a0;
+}
